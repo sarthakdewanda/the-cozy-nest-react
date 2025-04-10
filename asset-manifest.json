@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/the-cozy-nest/static/css/main.55e548db.css",
+    "main.js": "/the-cozy-nest/static/js/main.76a9b69b.js",
+    "index.html": "/the-cozy-nest/index.html",
+    "main.55e548db.css.map": "/the-cozy-nest/static/css/main.55e548db.css.map",
+    "main.76a9b69b.js.map": "/the-cozy-nest/static/js/main.76a9b69b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.55e548db.css",
+    "static/js/main.76a9b69b.js"
+  ]
+}
