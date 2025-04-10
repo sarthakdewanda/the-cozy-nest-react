@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import './index.css';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { useLayoutEffect } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +24,6 @@ function App() {
     };
 
     window.addEventListener('scroll', handleScroll);
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -59,7 +57,7 @@ function App() {
     left: '50%',
     height: '90%',
     transform: 'translateX(-50%)',
-    backgroundImage: 'url(images/bg.png)',
+    backgroundImage: `url(${process.env.PUBLIC_URL}/images/bg.png)`,
     backgroundSize: '100%',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'top center',
@@ -80,15 +78,15 @@ function App() {
       </header>
 
       <section className="parallax" id="home">
-        <img src="images/hill1.png" alt="" id="hill1" />
-        <img src="images/hill2.png" alt="" id="hill2" />
-        <img src="images/hill3.png" alt="" id="hill3" />
-        <img src="images/hill4.png" alt="" id="hill4" />
-        <img src="images/hill5.png" alt="" id="hill5" />
-        <img src="images/tree.png" alt="" id="tree" />
+        <img src={`${process.env.PUBLIC_URL}/images/hill1.png`} alt="" id="hill1" />
+        <img src={`${process.env.PUBLIC_URL}/images/hill2.png`} alt="" id="hill2" />
+        <img src={`${process.env.PUBLIC_URL}/images/hill3.png`} alt="" id="hill3" />
+        <img src={`${process.env.PUBLIC_URL}/images/hill4.png`} alt="" id="hill4" />
+        <img src={`${process.env.PUBLIC_URL}/images/hill5.png`} alt="" id="hill5" />
+        <img src={`${process.env.PUBLIC_URL}/images/tree.png`} alt="" id="tree" />
         <h2 id="text">The Cozy Nest</h2>
-        <img src="images/leaf.png" alt="" id="leaf" />
-        <img src="images/plant.png" alt="" id="plant" />
+        <img src={`${process.env.PUBLIC_URL}/images/leaf.png`} alt="" id="leaf" />
+        <img src={`${process.env.PUBLIC_URL}/images/plant.png`} alt="" id="plant" />
       </section>
 
       <main>
@@ -117,7 +115,7 @@ function App() {
             <div className="autoShow" key={index}>
               {index % 2 === 0 ? (
                 <>
-                  <figure><img src={item.img} alt={item.title} /></figure>
+                  <figure><img src={`${process.env.PUBLIC_URL}/${item.img}`} alt={item.title} /></figure>
                   <div>
                     <p>{item.title}</p>
                     <p className="desc">{item.desc}</p>
@@ -129,7 +127,7 @@ function App() {
                     <p>{item.title}</p>
                     <p className="desc">{item.desc}</p>
                   </div>
-                  <figure><img src={item.img} alt={item.title} /></figure>
+                  <figure><img src={`${process.env.PUBLIC_URL}/${item.img}`} alt={item.title} /></figure>
                 </>
               )}
             </div>
@@ -145,12 +143,12 @@ function App() {
 
       <div className="section-two" style={sectionTwoStyle}>
         <div style={sectionTwoBeforeStyle}></div>
-        
+
         <div className="banner">
           <div className="slider" style={{ '--quantity': 10 }}>
             {[...Array(10).keys()].map(i => (
               <div className="item" style={{ '--position': i + 1 }} key={i}>
-                <img src={`images/rotation/${i + 1}.png`} alt="" />
+                <img src={`${process.env.PUBLIC_URL}/images/rotation/${i + 1}.png`} alt="" />
               </div>
             ))}
           </div>
@@ -194,10 +192,10 @@ function App() {
             <div className="social">
               Find Us On Social Networks
               <a href="https://github.com/sarthakdewanda" target="_blank" rel="noreferrer">
-                <img src="images/github.png" alt="GitHub" className="social-icon" />
+                <img src={`${process.env.PUBLIC_URL}/images/github.png`} alt="GitHub" className="social-icon" />
               </a>
               <a href="https://www.linkedin.com/in/sarthak-dewanda-01b6a4270/" target="_blank" rel="noreferrer">
-                <img src="images/linkdin.png" alt="LinkedIn" className="social-icon" />
+                <img src={`${process.env.PUBLIC_URL}/images/linkdin.png`} alt="LinkedIn" className="social-icon" />
               </a>
             </div>
           </div>
