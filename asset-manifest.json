@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/the-cozy-nest/static/css/main.55e548db.css",
-    "main.js": "/the-cozy-nest/static/js/main.3cadb9fd.js",
+    "main.css": "/the-cozy-nest/static/css/main.631c9337.css",
+    "main.js": "/the-cozy-nest/static/js/main.9b5c8fdb.js",
     "index.html": "/the-cozy-nest/index.html",
-    "main.55e548db.css.map": "/the-cozy-nest/static/css/main.55e548db.css.map",
-    "main.3cadb9fd.js.map": "/the-cozy-nest/static/js/main.3cadb9fd.js.map"
+    "main.631c9337.css.map": "/the-cozy-nest/static/css/main.631c9337.css.map",
+    "main.9b5c8fdb.js.map": "/the-cozy-nest/static/js/main.9b5c8fdb.js.map"
   },
   "entrypoints": [
-    "static/css/main.55e548db.css",
-    "static/js/main.3cadb9fd.js"
+    "static/css/main.631c9337.css",
+    "static/js/main.9b5c8fdb.js"
   ]
 }
