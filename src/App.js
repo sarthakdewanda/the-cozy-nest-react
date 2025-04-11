@@ -6,14 +6,12 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-  // Parallax refs
   const textRef = useRef(null);
   const leafRef = useRef(null);
   const hill1Ref = useRef(null);
   const hill4Ref = useRef(null);
   const hill5Ref = useRef(null);
 
-  // 1. Parallax scroll
   useLayoutEffect(() => {
     const handleScroll = () => {
       const value = window.scrollY;
@@ -31,7 +29,6 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 2. Botpress scripts
   useEffect(() => {
     if (document.getElementById('botpress-inject')) return;
 
@@ -51,9 +48,7 @@ function App() {
     document.body.appendChild(injectScript);
   }, []);
 
-  // 3. GSAP ScrollTrigger animations
   useEffect(() => {
-    // autoShow fade-in & slide-up
     gsap.utils.toArray('.autoShow').forEach(elem => {
       gsap.from(elem, {
         scrollTrigger: {
@@ -69,7 +64,6 @@ function App() {
       });
     });
 
-    // autoBLur blur-in/out
     gsap.utils.toArray('.autoBLur').forEach(elem => {
       gsap.fromTo(elem,
         { filter: 'blur(40px)' },
@@ -134,7 +128,7 @@ function App() {
 
         <section className="grid grid-2">
           {[
-            { img: "images/bedroom.png", title: "Bedroom", desc: "Charming and cozy bedroom…" },
+            { img: "images/bedroom.png", title: "Bedroom", desc: "Charming and cozy bedroom, perfect for a restful stay in a welcoming home." },
             { img: "images/living_room.png", title: "Living Room", desc: "Spacious and inviting living room, ideal for relaxing or entertaining guests in comfort." },
             { img: "images/bathroom.png", title: "Bathroom", desc: "Modern and clean bathroom with all the essentials for a refreshing and relaxing experience." },
             { img: "images/lake_view.png", title: "Lake View", desc: "Stunning lake view, offering a peaceful and scenic backdrop for your stay." }
