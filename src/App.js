@@ -135,9 +135,9 @@ function App() {
         <section className="grid grid-2">
           {[
             { img: "images/bedroom.png", title: "Bedroom", desc: "Charming and cozy bedroom…" },
-            { img: "images/living_room.png", title: "Living Room", desc: "Spacious and inviting living room…" },
-            { img: "images/bathroom.png", title: "Bathroom", desc: "Modern and clean bathroom…" },
-            { img: "images/lake_view.png", title: "Lake View", desc: "Stunning lake view…" }
+            { img: "images/living_room.png", title: "Living Room", desc: "Spacious and inviting living room, ideal for relaxing or entertaining guests in comfort." },
+            { img: "images/bathroom.png", title: "Bathroom", desc: "Modern and clean bathroom with all the essentials for a refreshing and relaxing experience." },
+            { img: "images/lake_view.png", title: "Lake View", desc: "Stunning lake view, offering a peaceful and scenic backdrop for your stay." }
           ].map((item, idx) => (
             <div className="autoShow" key={idx}>
               {idx % 2 === 0 ? (
