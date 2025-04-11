@@ -186,7 +186,7 @@ function App() {
                 allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
               />
             </figure>
-            <div><p>The Cozy Nest</p><p className="desc">1600 Amphitheatre Parkway…</p></div>
+            <div><p>The Cozy Nest</p><p className="desc">1600 Amphitheatre Parkway, Mountain View, India</p></div>
           </div>
         </section>
       </div>
