@@ -2,8 +2,6 @@
   "name": "my-cozy-nest",
   "version": "0.1.0",
   "private": true,
-  "main": "app.js",
-  "homepage": "https://sarthakdewanda.github.io/the-cozy-nest",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
