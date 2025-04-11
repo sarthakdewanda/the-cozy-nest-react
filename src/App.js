@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import './index.css';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -6,49 +6,87 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-  useLayoutEffect(() => {
-    const text = document.getElementById('text');
-    const leaf = document.getElementById('leaf');
-    const hill1 = document.getElementById('hill1');
-    const hill4 = document.getElementById('hill4');
-    const hill5 = document.getElementById('hill5');
+  // Parallax refs
+  const textRef = useRef(null);
+  const leafRef = useRef(null);
+  const hill1Ref = useRef(null);
+  const hill4Ref = useRef(null);
+  const hill5Ref = useRef(null);
 
+  // 1. Parallax scroll
+  useLayoutEffect(() => {
     const handleScroll = () => {
-      let value = window.scrollY;
-      text.style.marginTop = value * 2.5 + 'px';
-      leaf.style.top = value * -1.5 + 'px';
-      leaf.style.left = value * 1.5 + 'px';
-      hill5.style.left = value * 1.5 + 'px';
-      hill4.style.left = value * -1.5 + 'px';
-      hill1.style.top = value * 1 + 'px';
+      const value = window.scrollY;
+      if (textRef.current) textRef.current.style.marginTop = value * 2.5 + 'px';
+      if (leafRef.current) {
+        leafRef.current.style.top = value * -1.5 + 'px';
+        leafRef.current.style.left = value * 1.5 + 'px';
+      }
+      if (hill5Ref.current) hill5Ref.current.style.left = value * 1.5 + 'px';
+      if (hill4Ref.current) hill4Ref.current.style.left = value * -1.5 + 'px';
+      if (hill1Ref.current) hill1Ref.current.style.top = value * 1 + 'px';
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 2. Botpress scripts
   useEffect(() => {
-    const script1 = document.createElement('script');
-    script1.src = 'https://cdn.botpress.cloud/webchat/v2.3/inject.js';
-    script1.async = true;
-    document.body.appendChild(script1);
+    if (document.getElementById('botpress-inject')) return;
 
-    const script2 = document.createElement('script');
-    script2.src = 'https://files.bpcontent.cloud/2025/04/10/21/20250410212435-EYZO7GGF.js';
-    script2.async = true;
-    document.body.appendChild(script2);
-
-    return () => {
-      document.body.removeChild(script1);
-      document.body.removeChild(script2);
+    const injectScript = document.createElement('script');
+    injectScript.src = 'https://cdn.botpress.cloud/webchat/v2.3/inject.js';
+    injectScript.async = true;
+    injectScript.defer = true;
+    injectScript.id = 'botpress-inject';
+    injectScript.onload = () => {
+      const configScript = document.createElement('script');
+      configScript.src = 'https://files.bpcontent.cloud/2025/04/10/21/20250410212435-EYZO7GGF.js';
+      configScript.async = true;
+      configScript.defer = true;
+      configScript.id = 'botpress-config';
+      document.body.appendChild(configScript);
     };
+    document.body.appendChild(injectScript);
   }, []);
 
-  const sectionTwoStyle = {
-    position: 'relative',
-    zIndex: 0
-  };
+  // 3. GSAP ScrollTrigger animations
+  useEffect(() => {
+    // autoShow fade-in & slide-up
+    gsap.utils.toArray('.autoShow').forEach(elem => {
+      gsap.from(elem, {
+        scrollTrigger: {
+          trigger: elem,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+        y: 200,
+        opacity: 0,
+        scale: 0.3,
+        duration: 1,
+        ease: 'power3.out'
+      });
+    });
 
+    // autoBLur blur-in/out
+    gsap.utils.toArray('.autoBLur').forEach(elem => {
+      gsap.fromTo(elem,
+        { filter: 'blur(40px)' },
+        {
+          filter: 'blur(0px)',
+          scrollTrigger: {
+            trigger: elem,
+            start: 'top 80%',
+            end: 'top 30%',
+            scrub: true
+          }
+        }
+      );
+    });
+  }, []);
+
+  const sectionTwoStyle = { position: 'relative', zIndex: 0 };
   const sectionTwoBeforeStyle = {
     content: '""',
     position: 'absolute',
@@ -78,14 +116,14 @@ function App() {
       </header>
 
       <section className="parallax" id="home">
-        <img src={`${process.env.PUBLIC_URL}/images/hill1.png`} alt="" id="hill1" />
+        <img src={`${process.env.PUBLIC_URL}/images/hill1.png`} alt="" id="hill1" ref={hill1Ref} />
         <img src={`${process.env.PUBLIC_URL}/images/hill2.png`} alt="" id="hill2" />
         <img src={`${process.env.PUBLIC_URL}/images/hill3.png`} alt="" id="hill3" />
-        <img src={`${process.env.PUBLIC_URL}/images/hill4.png`} alt="" id="hill4" />
-        <img src={`${process.env.PUBLIC_URL}/images/hill5.png`} alt="" id="hill5" />
+        <img src={`${process.env.PUBLIC_URL}/images/hill4.png`} alt="" id="hill4" ref={hill4Ref} />
+        <img src={`${process.env.PUBLIC_URL}/images/hill5.png`} alt="" id="hill5" ref={hill5Ref} />
         <img src={`${process.env.PUBLIC_URL}/images/tree.png`} alt="" id="tree" />
-        <h2 id="text">The Cozy Nest</h2>
-        <img src={`${process.env.PUBLIC_URL}/images/leaf.png`} alt="" id="leaf" />
+        <h2 id="text" ref={textRef}>The Cozy Nest</h2>
+        <img src={`${process.env.PUBLIC_URL}/images/leaf.png`} alt="" id="leaf" ref={leafRef} />
         <img src={`${process.env.PUBLIC_URL}/images/plant.png`} alt="" id="plant" />
       </section>
 
@@ -95,38 +133,21 @@ function App() {
         </section>
 
         <section className="grid grid-2">
-          {[{
-            img: "images/bedroom.png",
-            title: "Bedroom",
-            desc: "Charming and cozy bedroom, perfect for a restful stay in a welcoming home."
-          }, {
-            img: "images/living_room.png",
-            title: "Living Room",
-            desc: "Spacious and inviting living room, ideal for relaxing or entertaining guests in comfort."
-          }, {
-            img: "images/bathroom.png",
-            title: "Bathroom",
-            desc: "Modern and clean bathroom with all the essentials for a refreshing and relaxing experience."
-          }, {
-            img: "images/lake_view.png",
-            title: "Lake View",
-            desc: "Stunning lake view, offering a peaceful and scenic backdrop for your stay."
-          }].map((item, index) => (
-            <div className="autoShow" key={index}>
-              {index % 2 === 0 ? (
+          {[
+            { img: "images/bedroom.png", title: "Bedroom", desc: "Charming and cozy bedroom…" },
+            { img: "images/living_room.png", title: "Living Room", desc: "Spacious and inviting living room…" },
+            { img: "images/bathroom.png", title: "Bathroom", desc: "Modern and clean bathroom…" },
+            { img: "images/lake_view.png", title: "Lake View", desc: "Stunning lake view…" }
+          ].map((item, idx) => (
+            <div className="autoShow" key={idx}>
+              {idx % 2 === 0 ? (
                 <>
                   <figure><img src={`${process.env.PUBLIC_URL}/${item.img}`} alt={item.title} /></figure>
-                  <div>
-                    <p>{item.title}</p>
-                    <p className="desc">{item.desc}</p>
-                  </div>
+                  <div><p>{item.title}</p><p className="desc">{item.desc}</p></div>
                 </>
               ) : (
                 <>
-                  <div>
-                    <p>{item.title}</p>
-                    <p className="desc">{item.desc}</p>
-                  </div>
+                  <div><p>{item.title}</p><p className="desc">{item.desc}</p></div>
                   <figure><img src={`${process.env.PUBLIC_URL}/${item.img}`} alt={item.title} /></figure>
                 </>
               )}
@@ -135,49 +156,38 @@ function App() {
         </section>
 
         <section className="grid grid-3">
-          {['SKYLINE VIEW', 'WATERFRONT', 'PATIO', 'BREAKFAST', 'FREE WIFI'].map((text, index) => (
-            <div className="autoBLur" key={index}>{text}</div>
+          {['SKYLINE VIEW','WATERFRONT','PATIO','BREAKFAST','FREE WIFI'].map((t, i) => (
+            <div className="autoBLur" key={i}>{t}</div>
           ))}
         </section>
       </main>
 
       <div className="section-two" style={sectionTwoStyle}>
         <div style={sectionTwoBeforeStyle}></div>
-
         <div className="banner">
           <div className="slider" style={{ '--quantity': 10 }}>
             {[...Array(10).keys()].map(i => (
-              <div className="item" style={{ '--position': i + 1 }} key={i}>
-                <img src={`${process.env.PUBLIC_URL}/images/rotation/${i + 1}.png`} alt="" />
+              <div className="item" style={{ '--position': i+1 }} key={i}>
+                <img src={`${process.env.PUBLIC_URL}/images/rotation/${i+1}.png`} alt="" />
               </div>
             ))}
           </div>
-          <div className="content">
-            <h1 data-content="Reviews">Reviews</h1>
-          </div>
+          <div className="content"><h1 data-content="Reviews">Reviews</h1></div>
         </div>
       </div>
 
       <div className="location-wrapper" id="location">
-        <section className="grid grid-3">
-          <h2 className="autoShow">Location</h2>
-        </section>
-
+        <section className="grid grid-3"><h2 className="autoShow">Location</h2></section>
         <section className="grid grid-4">
           <div className="autoShow">
             <figure>
               <iframe
                 title="location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.736282602814!2d-122.08560868469212!3d37.42199997982533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba6b6f3aaf3d%3A0x2b1c8e1d7a4a9e1!2s1600+Amphitheatre+Parkway%2C+Mountain+View%2C+CA+94043%2C+USA!5e0!3m2!1sen!2sus!4v1610000000000!5m2!1sen!2sus"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+                allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+              />
             </figure>
-            <div>
-              <p>The Cozy Nest</p>
-              <p className="desc">1600 Amphitheatre Parkway, Mountain View, India</p>
-            </div>
+            <div><p>The Cozy Nest</p><p className="desc">1600 Amphitheatre Parkway…</p></div>
           </div>
         </section>
       </div>
@@ -192,10 +202,10 @@ function App() {
             <div className="social">
               Find Us On Social Networks
               <a href="https://github.com/sarthakdewanda" target="_blank" rel="noreferrer">
-                <img src={`${process.env.PUBLIC_URL}/images/github.png`} alt="GitHub" className="social-icon" />
+                <img src={`${process.env.PUBLIC_URL}/images/github.png`} alt="GitHub" className="social-icon"/>
               </a>
               <a href="https://www.linkedin.com/in/sarthak-dewanda-01b6a4270/" target="_blank" rel="noreferrer">
-                <img src={`${process.env.PUBLIC_URL}/images/linkdin.png`} alt="LinkedIn" className="social-icon" />
+                <img src={`${process.env.PUBLIC_URL}/images/linkdin.png`} alt="LinkedIn" className="social-icon"/>
               </a>
             </div>
           </div>
