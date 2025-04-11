@@ -30,24 +30,29 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (document.getElementById('botpress-inject')) return;
-
-    const injectScript = document.createElement('script');
-    injectScript.src = 'https://cdn.botpress.cloud/webchat/v2.3/inject.js';
-    injectScript.async = true;
-    injectScript.defer = true;
-    injectScript.id = 'botpress-inject';
-    injectScript.onload = () => {
+    // Avoid injecting if already present
+    if (!document.getElementById('botpress-inject')) {
+      const botpressScript = document.createElement('script');
+      botpressScript.src = 'https://cdn.botpress.cloud/webchat/v2.3/inject.js';
+      botpressScript.id = 'botpress-inject';
+      botpressScript.async = true;
+      botpressScript.defer = true;
+  
       const configScript = document.createElement('script');
-      configScript.src = 'https://files.bpcontent.cloud/2025/04/10/21/20250410212435-EYZO7GGF.js';
+      configScript.src = 'https://files.bpcontent.cloud/2025/04/09/13/20250409135612-8ZXGIRD6.js';
+      configScript.id = 'botpress-config';
       configScript.async = true;
       configScript.defer = true;
-      configScript.id = 'botpress-config';
-      document.body.appendChild(configScript);
-    };
-    document.body.appendChild(injectScript);
+  
+      // Append the first script and load the second only when the first is loaded
+      botpressScript.onload = () => {
+        document.body.appendChild(configScript);
+      };
+  
+      document.body.appendChild(botpressScript);
+    }
   }, []);
-
+  
   useEffect(() => {
     gsap.utils.toArray('.autoShow').forEach(elem => {
       gsap.from(elem, {
