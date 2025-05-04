@@ -44,6 +44,5 @@ The CSS is organized into several key sections:
 - Additional property amenities section
 - Virtual tour feature
 
-
 ## Credits
 - Design & Development: [Sarthak Dewanda]
